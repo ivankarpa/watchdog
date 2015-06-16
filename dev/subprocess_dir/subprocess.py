@@ -1,10 +1,15 @@
-__author__ = 'ivankarpa'
 import time
 
 
-while True:
-    f = open ('/home/ivankarpa/PycharmProjects/WD2/dev/subprocess_dir/file.txt','w')
-    f.write("a")
-    time.sleep(1)
-    f.close()
-    print("d1")
+class Subprocess:
+    def run_subprocess(self):
+        while True:
+            f = open('/home/ivankarpa/PycharmProjects/WD2/dev/subprocess_dir/file.txt', 'w')
+            f.write("a")
+            f.close()
+            time.sleep(1)
+            print("sp1")
+
+
+if __name__ == '__main__':
+    Subprocess().run_subprocess()

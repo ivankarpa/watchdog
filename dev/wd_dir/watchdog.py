@@ -1,17 +1,25 @@
-from dev.wd_dir import Client_handler
-from dev.wd_dir import Subprocess_handler
+import client_handler
+import subprocess_handler
+import time
 
-a = Subprocess_handler.Subprocess()
-a.start()
-a.run_subprocess()
+s = subprocess_handler.Subprocess()
+s.start()
 
-v = Client_handler.Client()
-v.start()
-v.open_connect()
+c = client_handler.Client()
+c.start()
+c.open_connect()
+
+
+
 
 while True:
-    message = v.recive_message()
-    if not message:
+    message = c.receive_message()
+
+    if message == "disconnect":
+        s.managing_the_subprocess('kill')
         break
     else:
-        a.managing_the_subprocess(message)
+        s.managing_the_subprocess(message)
+
+    if not c.check_connection():
+        c.open_connect()
