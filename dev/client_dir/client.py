@@ -2,76 +2,55 @@ import socket
 import sys
 import string
 
-
 class Client:
-    def send_request(self, request):
-        Client.connect(self)
-        self.sock.send(str(request))
-        Client.wait_for_response(self)
-
-    def wait_for_response(self):
-        data = self.sock.recv(1024)
-        print(data)
-
-    def run(self):
-        print("\nClient: Send request to run subprocess")
-        c.send_request('run')
-
-    def kill(self):
-        print("\nClient: Send request to kill subprocess")
-        c.send_request('kill')
-
-    def connect(self):
+    def __init__(self):
         self.sock = socket.socket()
-        print("Client: Try to connect")
+
+    def execute_command(self, command):
         try:
             self.sock.connect(('localhost', 9090))
-            Client.wait_for_response(self)
-        except socket.error:
-            print("Client: Warning! Connection error")
+            self.sock.send(command.encode())
+            response = self.sock.recv(1024).decode()
+            print(response)
+            self.sock.close()
+            return response
+        except socket.error as msg:
+            return "Exception! errcode: {0}, message: {1}".format(msg[0], msg[1])
 
-    def disconnect(self):
-        print("\nClient: Try to turn off server")
-        c.send_request('disconnect')
+    def run(self):
+        return self.execute_command('run')
+
+    def kill(self):
+        return self.execute_command('kill')
 
     def status(self):
-        print("\nClient: Send request to get process status")
-        c.send_request('status')
+        return self.execute_command('status')
 
-    def help(self):
-        print("\nPlease use following commands as an example\npython client.py -r \n or \npython client.py kill\n")
 
-        print(string.ljust(str(run_list), 25) + '- Run subprocess')
-        print(string.ljust(str(kill_list), 25) + '- Kill subprocess')
-        print(string.ljust(str(connect_list), 25) + '- Connect to server')
-        print(string.ljust(str(disconnect_list), 25) + '- Disconnect from server')
-        print(string.ljust(str(status_list), 25) + '- Status of subprocess')
+def help():
+    print("\nPlease use following commands as an example\npython client.py -r \n or \npython client.py kill\n")
+    print(string.ljust(str(run_list), 25) + '- Run subprocess')
+    print(string.ljust(str(kill_list), 25) + '- Kill subprocess')
+    print(string.ljust(str(status_list), 25) + '- Status of subprocess')
 
 
 if __name__ == '__main__':
     run_list = ['run', '-r']
     kill_list = ['kill', '-k']
-    connect_list = ['connect', '-c']
-    disconnect_list = ['disconnect', '-d']
     status_list = ['status', '-s']
     help_list = ['\help', '-h', 'help']
-    menu = [run_list, kill_list, connect_list, disconnect_list, status_list, help_list]
 
-    c = Client()
+    client = Client()
 
     if len(sys.argv) > 1:
         inp = sys.argv[1]
         if inp in run_list:
-            c.run()
+            client.run()
         elif inp in kill_list:
-            c.kill()
-        elif inp in connect_list:
-            c.connect()
-        elif inp in disconnect_list:
-            c.disconnect()
+            client.kill()
         elif inp in status_list:
-            c.status()
+            client.status()
         else:
-            c.help()
+            help()
     else:
-        c.help()
+        help()

