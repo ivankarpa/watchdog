@@ -20,8 +20,8 @@ class Client:
         except socket.error as msg:
             return "Exception! errcode: {0}, message: {1}".format(msg[0], msg[1])
 
-    def run(self):
-        return self.execute_command('run')
+    def start(self):
+        return self.execute_command('start')
 
     def kill(self):
         return self.execute_command('kill')
@@ -32,13 +32,13 @@ class Client:
 
 def help():
     print("\nPlease use following commands as an example\npython client.py -r \n or \npython client.py kill\n")
-    print('{:18}{}'.format(str(run_list), "- Run subprocess"))
+    print('{:18}{}'.format(str(start_list), "- Start subprocess"))
     print('{:18}{}'.format(str(kill_list), "- Kill subprocess"))
     print('{:18}{}'.format(str(status_list), "- Status of subprocess"))
 
 
 if __name__ == '__main__':
-    run_list = ['run', '-r']
+    start_list = ['start', '-r']
     kill_list = ['kill', '-k']
     status_list = ['status', '-s']
 
@@ -46,8 +46,8 @@ if __name__ == '__main__':
 
     if len(sys.argv) > 1:
         inp = sys.argv[1]
-        if inp in run_list:
-            client.run()
+        if inp in start_list:
+            client.start()
         elif inp in kill_list:
             client.kill()
         elif inp in status_list:
