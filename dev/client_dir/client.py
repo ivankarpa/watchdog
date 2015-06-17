@@ -1,14 +1,17 @@
 import socket
 import sys
-import string
+
+import cfg_parser
+
 
 class Client:
     def __init__(self):
         self.sock = socket.socket()
+        self.config = cfg_parser.Config()
 
     def execute_command(self, command):
         try:
-            self.sock.connect(('localhost', 9090))
+            self.sock.connect((self.config.get_host(), self.config.get_port()))
             self.sock.send(command.encode())
             response = self.sock.recv(1024).decode()
             print(response)
@@ -29,16 +32,15 @@ class Client:
 
 def help():
     print("\nPlease use following commands as an example\npython client.py -r \n or \npython client.py kill\n")
-    print(string.ljust(str(run_list), 25) + '- Run subprocess')
-    print(string.ljust(str(kill_list), 25) + '- Kill subprocess')
-    print(string.ljust(str(status_list), 25) + '- Status of subprocess')
+    print('{:18}{}'.format(str(run_list), "- Run subprocess"))
+    print('{:18}{}'.format(str(kill_list), "- Kill subprocess"))
+    print('{:18}{}'.format(str(status_list), "- Status of subprocess"))
 
 
 if __name__ == '__main__':
     run_list = ['run', '-r']
     kill_list = ['kill', '-k']
     status_list = ['status', '-s']
-    help_list = ['\help', '-h', 'help']
 
     client = Client()
 
