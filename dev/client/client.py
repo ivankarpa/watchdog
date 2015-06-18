@@ -31,21 +31,21 @@ class Client:
     def stop(self):
         return self.execute_command('stop')
 
-    def status(self):
-        return self.execute_command('status')
+    def about(self):
+        return self.execute_command('about')
 
 
 def help():
     print("\nPlease use following commands as an example\npython client.py -r \n or \npython client.py kill\n")
     print('{:18}{}'.format(str(start_list), "- Start subprocess"))
     print('{:18}{}'.format(str(stop_list), "- Stop subprocess"))
-    print('{:18}{}'.format(str(status_list), "- Status of subprocess"))
+    print('{:18}{}'.format(str(about_list), "- About subprocess"))
 
 
 if __name__ == '__main__':
     start_list = ['start', '-r']
-    stop_list = ['kill', '-k']
-    status_list = ['status', '-s']
+    stop_list = ['stop', '-s']
+    about_list = ['about', '-a']
 
     client = Client()
 
@@ -55,8 +55,8 @@ if __name__ == '__main__':
             print(client.start())
         elif inp in stop_list:
             print(client.stop())
-        elif inp in status_list:
-            print(client.status())
+        elif inp in about_list:
+            print(client.about())
         else:
             help()
     else:

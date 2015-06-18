@@ -8,7 +8,6 @@ class Subprocess:
             f.write("a")
             f.close()
             time.sleep(1)
-            print("sp1")
 
 
 if __name__ == '__main__':
