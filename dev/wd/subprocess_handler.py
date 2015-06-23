@@ -29,6 +29,7 @@ class Subprocess(threading.Thread):
             self.pipe = subprocess.Popen([sys.executable, self.file])
             self.pipe_id = self.pipe.pid
             self.lock_file = open('.lock', 'w')
+
             return "Subprocess successfully started. PID: {0}".format(self.pipe_id)
 
     def stop_subprocess(self):
@@ -48,6 +49,8 @@ class Subprocess(threading.Thread):
             return "Subprocess is started. PID: {0}".format(self.pipe_id)
         else:
             return "Subprocess does not work"
+
+
 
     def execute_command(self, command):
         if command == "start":

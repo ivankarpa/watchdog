@@ -66,16 +66,17 @@ class Daemon:
     def delpid(self):
         os.remove(self.pidfile)
 
-    def start(self):
-        """Start the daemon."""
-
+    def get_pid(self):
         # Check for a pidfile to see if the daemon already runs
         try:
             with open(self.pidfile, 'r') as pf:
-                pid = int(pf.read().strip())
+                return  int(pf.read().strip())
         except IOError:
-            pid = None
+            return None
 
+    def start(self):
+        """Start the daemon."""
+        pid = self.get_pid()
         if pid:
             message = "pidfile {0} already exist. " + \
                       "Daemon already running?\n"
@@ -84,19 +85,12 @@ class Daemon:
 
         # Start the daemon
         self.daemonize()
-
         self.run()
 
     def stop(self):
         """Stop the daemon."""
 
-        # Get the pid from the pidfile
-        try:
-            with open(self.pidfile, 'r') as pf:
-                pid = int(pf.read().strip())
-        except IOError:
-            pid = None
-
+        pid = self.get_pid()
         if not pid:
             message = "pidfile {0} does not exist. " + \
                       "Daemon not running?\n"
@@ -107,6 +101,7 @@ class Daemon:
         try:
             while 1:
                 os.kill(pid, signal.SIGTERM)
+
                 time.sleep(0.1)
         except OSError as err:
             e = str(err.args)
