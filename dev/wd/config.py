@@ -1,20 +1,23 @@
 import configparser
+import os
 
 
 class Config:
     def __init__(self, file_name):
+        self.file_name = file_name
+        self.config = configparser.ConfigParser({'port': '9090'})
         try:
-            self.config = configparser.ConfigParser({'port': '9090'})
-            if not len(self.config.read(file_name)):
-                print("Config file not found")
-                raise FileNotFoundError()
+            self.config.read(self.file_name)
         except configparser.MissingSectionHeaderError:
-                print("Missing section in config file")
-                raise ValueError()
+            pass
 
     def get_option(self, section, option):
-        try:
-            return True, str(self.config.get(section, option))
-        except (configparser.NoOptionError, KeyError):
+        if os.path.exists(self.file_name):
+            try:
+                return True, str(self.config.get(section, option))
+            except (configparser.NoOptionError, KeyError):
+                return False, ""
+            except (configparser.NoSectionError, KeyError):
+                return False, ""
+        else:
             return False, ""
-

@@ -7,10 +7,8 @@ import config
 class Client:
     def __init__(self):
         self.sock = socket.socket()
-        try:
-            self.config = config.Config('client.cfg')
-        except ValueError:
-            sys.exit(1)
+        self.config = config.Config('client.cfg')
+
 
     def execute_command(self, command):
         try:

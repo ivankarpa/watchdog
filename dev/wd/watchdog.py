@@ -21,10 +21,7 @@ class Watchdog(Daemon):
 
 
 if __name__ == '__main__':
-    try:
-        config = config.Config('watchdog.cfg')
-    except ValueError:
-        sys.exit(1)
+    config = config.Config('watchdog.cfg')
 
     _, pid_file = config.get_option('daemon', 'pid_file')
 

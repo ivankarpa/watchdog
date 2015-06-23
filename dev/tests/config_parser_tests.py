@@ -24,12 +24,9 @@ class ConfigParserTest(unittest.TestCase):
         self.assertEqual(test[1], '9090')
 
     def test_config_without_section(self):
-        try:
-            self.config = config.Config(self.CONFIG_WITHOUT_SECTION)
-        except ValueError:
-            return True
-        else:
-            self.fail()
+        self.config = config.Config(self.CONFIG_WITHOUT_SECTION)
+        test = self.config.get_option('connect', 'host')
+        self.assertEqual(test[1], '')
 
     def test_config_without_option(self):
         self.config = config.Config(self.CONFIG_WITHOUT_OPTION)
@@ -37,12 +34,9 @@ class ConfigParserTest(unittest.TestCase):
         self.assertEqual(test[1], '')
 
     def test_non_existent_config_file(self):
-        try:
-            self.config = config.Config(self.NON_EXISTENT_CONFIG_FILE)
-        except FileNotFoundError:
-            return True
-        else:
-            self.fail()
+        self.config = config.Config(self.NON_EXISTENT_CONFIG_FILE)
+        test = self.config.get_option('connect', 'host')
+        self.assertEqual(test[0], False)
 
 
 if __name__ == '__main__':
