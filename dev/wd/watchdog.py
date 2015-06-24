@@ -1,8 +1,8 @@
-import sys
-
 import client_handler
 import subprocess_handler
 from daemon import Daemon
+import sys
+sys.path.append('./../config_parser/')
 import config
 
 
@@ -21,7 +21,7 @@ class Watchdog(Daemon):
 
 
 if __name__ == '__main__':
-    config = config.Config('watchdog.cfg')
+    config = config.Config('./../wd/watchdog.cfg')
 
     _, pid_file = config.get_option('daemon', 'pid_file')
 

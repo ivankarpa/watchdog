@@ -1,5 +1,5 @@
 import configparser
-import os
+
 
 
 class Config:
@@ -12,12 +12,10 @@ class Config:
             pass
 
     def get_option(self, section, option):
-        if os.path.exists(self.file_name):
             try:
                 return True, str(self.config.get(section, option))
             except (configparser.NoOptionError, KeyError):
                 return False, ""
             except (configparser.NoSectionError, KeyError):
                 return False, ""
-        else:
-            return False, ""
+

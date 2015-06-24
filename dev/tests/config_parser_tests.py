@@ -1,7 +1,7 @@
 import unittest
 import sys
 
-sys.path.append('./../client/')
+sys.path.append('../config_parser/')
 import config
 
 

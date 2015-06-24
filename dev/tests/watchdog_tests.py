@@ -7,12 +7,16 @@ sys.path.append('./../wd/')
 
 
 class WatchDogTest(unittest.TestCase):
+    START_WATCHDOG = "cd ../wd && ./wd start"
+    STOP_WATCHDOG = "cd ../wd && ./wd start"
+    RESTART_WATCHDOG = "cd ../wd && ./wd start"
+
     def setUp(self):
-        os.system("cd ../wd && ./wd start")
+        os.system(self.START_WATCHDOG)
 
     def tearDown(self):
         if self.get_pid():
-            os.system("cd .. && cd wd && ./wd stop")
+            os.system(self.STOP_WATCHDOG)
 
     def get_pid(self):
         try:
@@ -32,7 +36,7 @@ class WatchDogTest(unittest.TestCase):
 
     def test_check_successfully_stop(self):
         temporary_pid = self.get_pid()
-        os.system("cd .. && cd wd && ./wd stop")
+        os.system(self.STOP_WATCHDOG)
         try:
             os.kill(temporary_pid, 0)
         except OSError:
@@ -42,7 +46,7 @@ class WatchDogTest(unittest.TestCase):
 
     def test_check_successfully_restart(self):
         pid_before_restart = self.get_pid()
-        os.system("cd .. && cd wd && ./wd restart")
+        os.system(self.RESTART_WATCHDOG)
         pid_after_restart = self.get_pid()
         self.assertNotEqual(pid_before_restart, pid_after_restart)
 

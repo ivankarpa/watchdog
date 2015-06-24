@@ -1,6 +1,7 @@
 import socket
 import threading
-
+import sys
+sys.path.append('./../config_parser/')
 import config
 
 class Client(threading.Thread):
@@ -19,6 +20,7 @@ class Client(threading.Thread):
             self.sock.bind((host, int(port)))
             self.sock.listen(1)
             while True:
+                self.connection, self.address = self.sock.accept()
                 command = self.receive_message()
                 response = self.subprocess.execute_command(command)
                 self.send_message(response)
@@ -32,5 +34,4 @@ class Client(threading.Thread):
         self.connection.send(str(message).encode())
 
     def receive_message(self):
-        self.connection, self.address = self.sock.accept()
         return str(self.connection.recv(1024).decode())
