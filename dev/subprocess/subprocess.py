@@ -4,7 +4,7 @@ import time
 class Subprocess:
     def run_subprocess(self):
         while True:
-            f = open('./../subprocess/file.txt', 'w')
+            f = open('../subprocess/file.txt', 'w')
             f.write("a")
             f.close()
             time.sleep(1)

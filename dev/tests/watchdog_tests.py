@@ -1,15 +1,15 @@
 import unittest
 import os
 import sys
-import time
 
 sys.path.append('./../wd/')
 
 
 class WatchDogTest(unittest.TestCase):
     START_WATCHDOG = "cd ../wd && ./wd start"
-    STOP_WATCHDOG = "cd ../wd && ./wd start"
-    RESTART_WATCHDOG = "cd ../wd && ./wd start"
+    STOP_WATCHDOG = "cd ../wd && ./wd stop"
+    RESTART_WATCHDOG = "cd ../wd && ./wd restart"
+    WATCHDOG_PID_FILE = "../wd/daemon_pid_file.pid"
 
     def setUp(self):
         os.system(self.START_WATCHDOG)
@@ -18,15 +18,15 @@ class WatchDogTest(unittest.TestCase):
         if self.get_pid():
             os.system(self.STOP_WATCHDOG)
 
+
     def get_pid(self):
         try:
-            time.sleep(0.5)
-            pid_file = open('../wd/daemon_pid_file.pid', 'r')
+            pid_file = open(self.WATCHDOG_PID_FILE, 'r')
             pid = pid_file.read()
             pid_file.close()
             return int(pid)
         except FileNotFoundError:
-            pass
+            return None
 
     def test_check_successfully_start(self):
         try:
@@ -39,6 +39,7 @@ class WatchDogTest(unittest.TestCase):
         os.system(self.STOP_WATCHDOG)
         try:
             os.kill(temporary_pid, 0)
+
         except OSError:
             return True
         else:

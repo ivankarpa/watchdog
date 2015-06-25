@@ -1,8 +1,8 @@
 import unittest
 import sys
 
-sys.path.append('../config_parser/')
-import config
+sys.path.append('../common/')
+import client_config
 
 
 class ConfigParserTest(unittest.TestCase):
@@ -13,28 +13,27 @@ class ConfigParserTest(unittest.TestCase):
     NON_EXISTENT_CONFIG_FILE = './test_data/non_exist.cfg'
 
     def test_config_with_good_values(self):
-        self.config = config.Config(self.CONFIG_WITH_GOOD_VALUES)
+        self.config = client_config.ClientConfig(self.CONFIG_WITH_GOOD_VALUES)
         test = self.config.get_option('connect', 'host')
         self.assertEqual(test[1], 'localhost')
 
-
     def test_default_port_value(self):
-        self.config = config.Config(self.CONFIG_WITHOUT_PORT_VALUE)
+        self.config = client_config.ClientConfig(self.CONFIG_WITHOUT_PORT_VALUE)
         test = self.config.get_option('connect', 'port')
-        self.assertEqual(test[1], '9090')
+        self.assertEqual(test[1], '9091')
 
     def test_config_without_section(self):
-        self.config = config.Config(self.CONFIG_WITHOUT_SECTION)
+        self.config = client_config.ClientConfig(self.CONFIG_WITHOUT_SECTION)
         test = self.config.get_option('connect', 'host')
         self.assertEqual(test[1], '')
 
     def test_config_without_option(self):
-        self.config = config.Config(self.CONFIG_WITHOUT_OPTION)
+        self.config = client_config.ClientConfig(self.CONFIG_WITHOUT_OPTION)
         test = self.config.get_option('connect', 'host')
         self.assertEqual(test[1], '')
 
     def test_non_existent_config_file(self):
-        self.config = config.Config(self.NON_EXISTENT_CONFIG_FILE)
+        self.config = client_config.ClientConfig(self.NON_EXISTENT_CONFIG_FILE)
         test = self.config.get_option('connect', 'host')
         self.assertEqual(test[0], False)
 

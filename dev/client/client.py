@@ -1,20 +1,20 @@
 import socket
 import sys
 
-sys.path.append('../config_parser/')
-import config
+sys.path.append('../common/')
+import client_config
 
 
 class Client:
     def __init__(self):
         self.sock = socket.socket()
-        self.config = config.Config('./../client/client.cfg')
+        self.config = client_config.ClientConfig('client.cfg')
 
     def execute_command(self, command):
         try:
             host_found, host = self.config.get_option('connect', 'host')
             if not host_found:
-                print(host)
+                return "Host not set in config" + host
             _, port = self.config.get_option('connect', 'port')
             self.sock.connect((host, int(port)))
             self.sock.send(command.encode())

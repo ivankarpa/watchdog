@@ -1,1 +1,1 @@
-python3 watchdog.py $1
+python3 watchdog.py $1 && cat /tmp/__test_log
